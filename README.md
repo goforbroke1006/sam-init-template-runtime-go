@@ -1,14 +1,15 @@
-# remove-me-1
+# sam-init-template-runtime-go
 
 This is a sample template for remove-me-1 - Below is a brief explanation of what we have generated for you:
 
 ```bash
 .
-├── Makefile                    <-- Make to automate build
-├── README.md                   <-- This instructions file
-├── hello-world                 <-- Source code for a lambda function
-│   ├── main.go                 <-- Lambda function code
-│   └── main_test.go            <-- Unit tests
+├── Makefile                            <-- Make to automate build
+├── README.md                           <-- This instructions file
+├── function
+│   └── sam-init-template-runtime-go    <-- Source code for a lambda function
+│       ├── main.go                     <-- Lambda function code
+│       └── main_test.go                <-- Unit tests
 └── template.yaml
 ```
 

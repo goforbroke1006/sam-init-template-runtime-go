@@ -11,10 +11,10 @@ clean:
 	rm -rf ./build/archive/*
 
 build:
-	GOOS=linux GOARCH=amd64 go build -o build/bin/sam-init-template-runtime-go ./cmd/sam-init-template-runtime-go
+	GOOS=linux GOARCH=amd64 go build -o build/bin/sam-init-template-runtime-go ./function/sam-init-template-runtime-go
 
 build-debug:
-	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/sam-init-template-runtime-go ./cmd/sam-init-template-runtime-go
+	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/sam-init-template-runtime-go ./function/sam-init-template-runtime-go
 
 start-api:
 	go get -u github.com/go-delve/delve/cmd/dlv
