@@ -22,5 +22,5 @@ start-api:
 	sam local start-api --port 3000 --debug-port 5986 --debugger-path ./build/debugger/ --debug-args '-delveAPI=2'
 
 publish:
-	sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket scherkesov1006-lambda-deploy
+	sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${AWS_DEPLOY_BUCKET_NAME}
 	sam deploy --template-file packaged.yaml --stack-name sam-init-template-runtime-go --capabilities CAPABILITY_IAM
