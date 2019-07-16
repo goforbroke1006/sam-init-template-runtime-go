@@ -11,6 +11,7 @@ Globals:
     Timeout: 5
 
 Resources:
+
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -28,10 +29,37 @@ Resources:
         Variables:
           PARAM1: VALUE
 
+  CurrentTimeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./build/bin/
+      Handler: current-time
+      Runtime: go1.x
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /current-time
+            Method: GET
+
+  HelloUsernameFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./build/bin/
+      Handler: hello-username
+      Runtime: go1.x
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello-username
+            Method: GET
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+
   HelloWorldAPI:
     Description: "API Gateway endpoint URL for Prod environment for First Function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
@@ -41,6 +69,26 @@ Outputs:
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt HelloWorldFunctionRole.Arn
+
+  CurrentTimeAPI:
+    Description: "API Gateway endpoint URL for Prod environment for First Function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/current-time/"
+  CurrentTimeFunction:
+    Description: "First Lambda Function ARN"
+    Value: !GetAtt CurrentTimeFunction.Arn
+  CurrentTimeFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt CurrentTimeFunctionRole.Arn
+
+  HelloUsernameAPI:
+    Description: "API Gateway endpoint URL for Prod environment for First Function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello-username/"
+  HelloUsernameFunction:
+    Description: "First Lambda Function ARN"
+    Value: !GetAtt HelloUsernameFunction.Arn
+  HelloUsernameFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt HelloUsernameFunctionRole.Arn
 
 Metadata:
   AWS::ServerlessRepo::Application:

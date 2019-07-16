@@ -1,6 +1,8 @@
 # sam-init-template-runtime-go
 
-This is a sample template for remove-me-1 - Below is a brief explanation of what we have generated for you:
+This is a sample template for SAM project (runtime=go1.x)
+
+Below is a brief explanation of what we have generated for you:
 
 ```bash
 .
@@ -18,30 +20,21 @@ This is a sample template for remove-me-1 - Below is a brief explanation of what
 * AWS CLI already configured with Administrator permission
 * [Docker installed](https://www.docker.com/community-edition)
 * [Golang](https://golang.org)
+* [AWS SAM CLI](https://docs.aws.amazon.com/en_us/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 
 ## Setup process
 
 ### Installing dependencies
 
-In this example we use the built-in `go get` and the only dependency we need is AWS Lambda Go SDK:
-
 ```shell
-go get -u github.com/aws/aws-lambda-go/...
+make deps
 ```
-
-**NOTE:** As you change your application code as well as dependencies during development, you might want to research how to handle dependencies in Golang at scale.
 
 ### Building
 
-Golang is a statically compiled language, meaning that in order to run it you have to build the executable target.
-
-You can issue the following command in a shell to build it:
-
 ```shell
-GOOS=linux GOARCH=amd64 go build -o hello-world/hello-world ./hello-world
+make build
 ```
-
-**NOTE**: If you're not building the function on a Linux machine, you will need to specify the `GOOS` and `GOARCH` environment variables, this allows Golang to build your function for another system architecture and ensure compatibility.
 
 ### Local development
 
@@ -118,42 +111,7 @@ We use `testing` package that is built-in in Golang and you can simply run the f
 ```shell
 go test -v ./hello-world/
 ```
-# Appendix
 
-### Golang installation
-
-Please ensure Go 1.x (where 'x' is the latest version) is installed as per the instructions on the official golang website: https://golang.org/doc/install
-
-A quickstart way would be to use Homebrew, chocolatey or your linux package manager.
-
-#### Homebrew (Mac)
-
-Issue the following command from the terminal:
-
-```shell
-brew install golang
-```
-
-If it's already installed, run the following command to ensure it's the latest version:
-
-```shell
-brew update
-brew upgrade golang
-```
-
-#### Chocolatey (Windows)
-
-Issue the following command from the powershell:
-
-```shell
-choco install golang
-```
-
-If it's already installed, run the following command to ensure it's the latest version:
-
-```shell
-choco upgrade golang
-```
 ## AWS CLI commands
 
 AWS CLI commands to package, deploy and describe outputs defined within the cloudformation stack:
@@ -185,3 +143,10 @@ Here are a few ideas that you can use to get more acquainted as to how this over
 Next, you can use the following resources to know more about beyond hello world samples and how others structure their Serverless applications:
 
 * [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/)
+
+## Useful links
+
+* [Index of Lambda apps](https://docs.aws.amazon.com/en_us/lambda/latest/dg/deploying-lambda-apps.html)
+* [SAM CLI quick start](https://docs.aws.amazon.com/en_us/serverless-application-model/latest/developerguide/serverless-quick-start.html)
+* [SAM CLI deploy](https://docs.aws.amazon.com/en_us/serverless-application-model/latest/developerguide/serverless-deploying.html)
+* Example [template.yaml](https://docs.aws.amazon.com/en_us/lambda/latest/dg/with-s3-example-use-app-spec.html)

@@ -11,10 +11,14 @@ clean:
 	rm -rf ./build/archive/*
 
 build:
-	GOOS=linux GOARCH=amd64 go build -o build/bin/sam-init-template-runtime-go ./function/sam-init-template-runtime-go
+	GOOS=linux GOARCH=amd64 go build -o build/bin/sam-init-template-runtime-go  ./cmd/sam-init-template-runtime-go
+	GOOS=linux GOARCH=amd64 go build -o build/bin/current-time                  ./cmd/current-time
+	GOOS=linux GOARCH=amd64 go build -o build/bin/hello-username                ./cmd/hello-username
 
 build-debug:
-	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/sam-init-template-runtime-go ./function/sam-init-template-runtime-go
+	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/sam-init-template-runtime-go ./cmd/sam-init-template-runtime-go
+	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/current-time                 ./cmd/current-time
+	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/hello-username               ./cmd/hello-username
 
 start-api:
 	go get -u github.com/go-delve/delve/cmd/dlv
@@ -24,3 +28,11 @@ start-api:
 publish:
 	sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${AWS_DEPLOY_BUCKET_NAME}
 	sam deploy --template-file packaged.yaml --stack-name sam-init-template-runtime-go --capabilities CAPABILITY_IAM
+
+
+debug/CurrentTimeFunction:
+	sam local invoke --event cmd/current-time/event.json CurrentTimeFunction --debug
+
+debug/HelloUsernameFunction:
+	sam local invoke --event cmd/hello-username/event.json HelloUsernameFunction --debug
+
