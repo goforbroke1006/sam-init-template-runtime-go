@@ -14,7 +14,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./build/archive/sam-init-template-runtime-go.zip
+      CodeUri: ./build/bin/
       Handler: sam-init-template-runtime-go
       Runtime: go1.x
       Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
