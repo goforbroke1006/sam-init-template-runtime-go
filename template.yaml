@@ -52,7 +52,7 @@ Metadata:
     Name: sam-init-template-runtime-go
     Description: hello world
     Author: GFB
-    SpdxLicenseId: Apache-2.0
+    SpdxLicenseId: MIT
     LicenseUrl: LICENSE.txt
     ReadmeUrl: README.md
     Labels: ['tests']
