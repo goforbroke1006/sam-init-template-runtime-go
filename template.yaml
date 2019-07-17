@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 5
+    Timeout: 60
 
 Resources:
 
@@ -55,6 +55,61 @@ Resources:
             Path: /hello-username
             Method: GET
 
+  RetrieveCompaniesDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./build/bin/
+      Handler: retrieve-companies-data
+      Runtime: go1.x
+      Events:
+        CompaniesDataCSVFileUploaded:
+          Type: S3
+          Properties:
+            Bucket: !Ref CompaniesDataBucket
+            Events: s3:ObjectCreated:*
+      Environment:
+        Variables:
+          CompaniesDataTableName: CompaniesData
+
+  CompaniesDataBucket:
+    Type: AWS::S3::Bucket
+
+  CompaniesDataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: CompaniesDataBucketPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal:
+              AWS:
+                - !GetAtt RetrieveCompaniesDataFunctionRole.Arn
+            Action: 's3:GetObject'
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref CompaniesDataBucket
+                - /*
+      Bucket: !Ref CompaniesDataBucket
+
+  CompaniesDataDynamoDBTable:
+    TableName: CompaniesData
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      Tags:
+        AppType: Serverless
+        Awesome: TrueTrue
+      SSESpecification:
+        SSEEnabled: true
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
@@ -89,6 +144,13 @@ Outputs:
   HelloUsernameFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt HelloUsernameFunctionRole.Arn
+
+  RetrieveCompaniesDataFunction:
+    Description: "First Lambda Function ARN"
+    Value: !GetAtt RetrieveCompaniesDataFunction.Arn
+  RetrieveCompaniesDataFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt RetrieveCompaniesDataFunctionRole.Arn
 
 Metadata:
   AWS::ServerlessRepo::Application:
