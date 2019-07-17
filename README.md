@@ -8,11 +8,20 @@ Below is a brief explanation of what we have generated for you:
 .
 ├── Makefile                            <-- Make to automate build
 ├── README.md                           <-- This instructions file
-├── function
-│   └── sam-init-template-runtime-go    <-- Source code for a lambda function
+├── .env                                <-- Var export for Makefile (git ignored)
+├── .env.dist                           <-- Sample of ".env"
+├── cmd
+│   └── current-time                    <-- Root of runner for lambda function
+│   │   ├── main.go                     <-- Lambda function code
+│   │   └── main_test.go                <-- Unit tests
+│   └── hello-username                  <-- Root of runner for lambda function
+│   │   ├── event.json                  <-- Debug request
+│   │   ├── main.go                     <-- Lambda function code
+│   │   └── main_test.go                <-- Unit tests
+│   └── sam-init-template-runtime-go    <-- Root of runner for lambda function
 │       ├── main.go                     <-- Lambda function code
 │       └── main_test.go                <-- Unit tests
-└── template.yaml
+└── template.yaml                       <-- SAM-friendly configuration
 ```
 
 ## Requirements

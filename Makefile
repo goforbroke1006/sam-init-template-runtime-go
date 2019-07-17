@@ -31,8 +31,10 @@ publish:
 
 
 debug/CurrentTimeFunction:
+	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/current-time ./cmd/current-time
 	sam local invoke --event cmd/current-time/event.json CurrentTimeFunction --debug
 
 debug/HelloUsernameFunction:
+	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/hello-username ./cmd/hello-username
 	sam local invoke --event cmd/hello-username/event.json HelloUsernameFunction --debug
 
