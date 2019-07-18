@@ -160,3 +160,4 @@ Next, you can use the following resources to know more about beyond hello world 
 * [SAM CLI deploy](https://docs.aws.amazon.com/en_us/serverless-application-model/latest/developerguide/serverless-deploying.html)
 * Example [template.yaml](https://docs.aws.amazon.com/en_us/lambda/latest/dg/with-s3-example-use-app-spec.html)
 * Resources types in template.yaml [here](https://docs.aws.amazon.com/en_us/serverless-application-model/latest/developerguide/serverless-sam-template.html)
+* Golang samples for S3 API [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3/)

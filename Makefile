@@ -5,6 +5,9 @@ export $(shell sed 's/=.*//' .env)
 
 .PHONY: deps clean build
 
+setup:
+	aws s3 mb s3://${AWS_DEPLOY_BUCKET_NAME} || true
+
 deps:
 	dep ensure -v
 
@@ -30,7 +33,6 @@ start-api:
 	sam local start-api --port 3000 --debug-port 5986 --debugger-path ./build/debugger/ --debug-args '-delveAPI=2'
 
 publish:
-	aws s3 mb s3://${AWS_DEPLOY_BUCKET_NAME} || true
 	sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${AWS_DEPLOY_BUCKET_NAME}
 	sam deploy --template-file packaged.yaml --stack-name ${AWS_CF_STACK} --capabilities CAPABILITY_IAM
 

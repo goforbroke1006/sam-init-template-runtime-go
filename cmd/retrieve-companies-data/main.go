@@ -19,6 +19,8 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+
+	"github.com/google/uuid"
 )
 
 func uploadNewFileHandler(e events.S3Event) error {
@@ -65,12 +67,15 @@ func uploadNewFileHandler(e events.S3Event) error {
 }
 
 type Item struct {
-	Year  int
-	Title string
+	Id    string `dynamodbav:"id"`
+	Title string `dynamodbav:"title"`
+	Year  int    `dynamodbav:"year"`
 }
 
 func parseCompDataFile(db *dynamodb.DynamoDB, file *os.File) error {
 	reader := bufio.NewReader(file)
+
+	tableName := os.Getenv("CompaniesDataTableName")
 
 	for {
 		line, _, err := reader.ReadLine()
@@ -81,14 +86,39 @@ func parseCompDataFile(db *dynamodb.DynamoDB, file *os.File) error {
 
 		data := strings.Split(string(line), ";")
 
-		year, err := strconv.Atoi(data[1])
+		if 2 != len(data) {
+			return fmt.Errorf("wrond format of string \"%s\"", string(line))
+		}
+
+		companyTitle := data[0]
+		companyFoundationYear, err := strconv.Atoi(data[1])
 		if err != nil {
 			return err
 		}
 
+		titleCond := &dynamodb.Condition{}
+		titleCond.SetAttributeValueList([]*dynamodb.AttributeValue{
+			{S: aws.String(companyTitle)},
+		})
+		titleCond.SetComparisonOperator(dynamodb.ComparisonOperatorEq)
+
+		params := &dynamodb.ScanInput{
+			TableName:  aws.String(tableName),
+			ScanFilter: map[string]*dynamodb.Condition{"title": titleCond},
+		}
+		result, err := db.Scan(params)
+		if err != nil {
+			return fmt.Errorf("failed to make Query API call, %v", err)
+		}
+		if *result.Count > 0 {
+			log.Println("Company", companyTitle, "already exists")
+			continue
+		}
+
 		item := Item{
-			Title: data[0],
-			Year:  year,
+			Id:    uuid.New().String(),
+			Title: companyTitle,
+			Year:  companyFoundationYear,
 		}
 		av, err := dynamodbattribute.MarshalMap(item)
 		if err != nil {
@@ -97,7 +127,7 @@ func parseCompDataFile(db *dynamodb.DynamoDB, file *os.File) error {
 
 		input := &dynamodb.PutItemInput{
 			Item:      av,
-			TableName: aws.String(os.Getenv("CompaniesDataTableName")),
+			TableName: aws.String(tableName),
 		}
 
 		_, err = db.PutItem(input)

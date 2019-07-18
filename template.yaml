@@ -69,7 +69,10 @@ Resources:
             Events: s3:ObjectCreated:*
       Environment:
         Variables:
-          CompaniesDataTableName: CompaniesData
+          CompaniesDataTableName: !Ref CompaniesDataDynamoDBTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CompaniesDataDynamoDBTable
 
   CompaniesDataBucket:
     Type: AWS::S3::Bucket
@@ -95,7 +98,6 @@ Resources:
       Bucket: !Ref CompaniesDataBucket
 
   CompaniesDataDynamoDBTable:
-    TableName: CompaniesData
     Type: AWS::Serverless::SimpleTable
     Properties:
       PrimaryKey:
