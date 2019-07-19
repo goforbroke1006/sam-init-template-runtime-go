@@ -112,6 +112,18 @@ Resources:
       SSESpecification:
         SSEEnabled: true
 
+  OldApiRetrieveDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./build/bin/
+      Handler: old-api-retrieve-data
+      Runtime: go1.x
+      Events:
+        CheckWebsiteScheduledEvent:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 0 * * ? *)
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
@@ -153,6 +165,13 @@ Outputs:
   RetrieveCompaniesDataFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt RetrieveCompaniesDataFunctionRole.Arn
+
+  OldApiRetrieveDataFunction:
+    Description: "First Lambda Function ARN"
+    Value: !GetAtt OldApiRetrieveDataFunction.Arn
+  OldApiRetrieveDataFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt OldApiRetrieveDataFunctionRole.Arn
 
 Metadata:
   AWS::ServerlessRepo::Application:

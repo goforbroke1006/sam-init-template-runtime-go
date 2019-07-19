@@ -161,3 +161,4 @@ Next, you can use the following resources to know more about beyond hello world 
 * Example [template.yaml](https://docs.aws.amazon.com/en_us/lambda/latest/dg/with-s3-example-use-app-spec.html)
 * Resources types in template.yaml [here](https://docs.aws.amazon.com/en_us/serverless-application-model/latest/developerguide/serverless-sam-template.html)
 * Golang samples for S3 API [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3/)
+* Here [SAM for scheduled lambda function](https://docs.aws.amazon.com/en_us/lambda/latest/dg/with-scheduledevents-example-use-app-spec.html) and [CRON annotations](https://docs.aws.amazon.com/en_us/lambda/latest/dg/tutorial-scheduled-events-schedule-expressions.html)

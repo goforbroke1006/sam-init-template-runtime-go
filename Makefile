@@ -20,12 +20,14 @@ build:
 	GOOS=linux GOARCH=amd64 go build -o build/bin/current-time                  ./cmd/current-time
 	GOOS=linux GOARCH=amd64 go build -o build/bin/hello-username                ./cmd/hello-username
 	GOOS=linux GOARCH=amd64 go build -o build/bin/retrieve-companies-data       ./cmd/retrieve-companies-data
+	GOOS=linux GOARCH=amd64 go build -o build/bin/old-api-retrieve-data         ./cmd/old-api-retrieve-data
 
 build-debug:
 	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/sam-init-template-runtime-go ./cmd/sam-init-template-runtime-go
 	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/current-time                 ./cmd/current-time
 	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/hello-username               ./cmd/hello-username
 	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/retrieve-companies-data      ./cmd/retrieve-companies-data
+	GOOS=linux GOARCH=amd64 go build -gcflags "all=-N -l" -o build/bin/old-api-retrieve-data        ./cmd/old-api-retrieve-data
 
 start-api:
 	go get -u github.com/go-delve/delve/cmd/dlv
@@ -55,5 +57,17 @@ debug/retrieve-companies-data:
 	sam local generate-event s3 put --bucket test-bucket --debug | sam local invoke RetrieveCompaniesDataFunction
 
 
+
+
 logs/retrieve-companies-data:
 	sam logs -n RetrieveCompaniesDataFunction --stack-name ${AWS_CF_STACK} --tail
+
+logs/old-api-retrieve-data:
+	sam logs -n OldApiRetrieveDataFunction --stack-name ${AWS_CF_STACK}
+
+
+
+
+#invoke/old-api-retrieve-data:
+#	aws lambda invoke --function-name WRONG_OldApiRetrieveDataFunction out --log-type Tail --query 'LogResult' --output text | base64 -d
+
